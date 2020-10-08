@@ -17,8 +17,6 @@ class NeuralNetwork(object):
                                                          (self.hidden_nodes, self.output_nodes))
         self.lr = learning_rate
 
-        # self.activation_function = lambda x :
-
         def sigmoid(x):
 
             return 1 / (1 + np.exp(-x))
@@ -54,14 +52,11 @@ class NeuralNetwork(object):
             X: features batch
 
         '''
-        # Check Validity !!
 
         hidden_inputs = np.dot(X, self.weights_input_to_hidden)
         hidden_outputs = self.activation_function(hidden_inputs)
 
-        # final_inputs = hidden_outputs.dot(self.weights_hidden_to_output)
         final_inputs = np.dot(hidden_outputs, self.weights_hidden_to_output)
-        # final_outputs = self.output_function(final_inputs)
         final_outputs = final_inputs
 
         return final_outputs, hidden_outputs
@@ -77,28 +72,11 @@ class NeuralNetwork(object):
             delta_weights_h_o: change in weights from hidden to output layers
 
         '''
-        #### Implement the backward pass here ####
-        ### Backward pass ###
 
-        # TODO: Output error - Replace this value with your calculations.
         error = y - final_outputs
-
-        # TODO: Backpropagated error terms - Replace these values with your calculations.
         output_error_term = error * 1
-        # TODO: Calculate the hidden layer's contribution to the error
-
-        # hidden_error = np.dot(self.weights_hidden_to_output, output_error_term)
-        # hidden_error = np.dot(self.weights_hidden_to_output, error)
-        # hidden_error = error * final_outputs * (1.0 - final_outputs)
 
         hidden_error = np.dot(self.weights_hidden_to_output, error)
-
-        # hidden_error_term = hidden_error * \
-        #     hidden_outputs * (1 - hidden_outputs)
-
-        # hidden_error_term = np.dot(
-        #     hidden_error, self.weights_hidden_to_output.T * hidden_outputs * (1.0 - hidden_outputs))
-
         hidden_error_term = hidden_error*hidden_outputs*(1-hidden_outputs)
 
         # Weight step (input to hidden)
