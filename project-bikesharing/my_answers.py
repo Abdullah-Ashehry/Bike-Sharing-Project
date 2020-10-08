@@ -59,7 +59,8 @@ class NeuralNetwork(object):
         hidden_inputs = X.dot(self.weights_input_to_hidden)
         hidden_outputs = self.activation_function(hidden_inputs)
 
-        final_inputs = hidden_outputs.dot(self.weights_hidden_to_output)
+        # final_inputs = hidden_outputs.dot(self.weights_hidden_to_output)
+        final_inputs = np.dot(hidden_outputs, self.weights_hidden_to_output)
         # final_outputs = self.output_function(final_inputs)
         final_outputs = final_inputs
 
@@ -86,10 +87,18 @@ class NeuralNetwork(object):
         output_error_term = (error * final_outputs * (1 - final_outputs))
 
         # TODO: Calculate the hidden layer's contribution to the error
-        hidden_error = np.dot(self.weights_hidden_to_output, output_error_term)
 
-        hidden_error_term = hidden_error * \
-            hidden_outputs * (1 - hidden_outputs)
+        # hidden_error = np.dot(self.weights_hidden_to_output, output_error_term)
+        # hidden_error = np.dot(self.weights_hidden_to_output, error)
+        hidden_error = error * final_outputs * (1.0 - final_outputs)
+
+        # hidden_error_term = hidden_error * \
+        #     hidden_outputs * (1 - hidden_outputs)
+
+        # hidden_error_term = np.dot(
+        #     hidden_error, self.weights_hidden_to_output.T * hidden_outputs * (1.0 - hidden_outputs))
+
+        hidden_error_term = hidden_error*hidden_outputs*(1-hidden_outputs)
 
         # Weight step (input to hidden)
         delta_weights_i_h += hidden_error_term * X[:, None]
@@ -108,9 +117,9 @@ class NeuralNetwork(object):
 
         '''
 
-        self.weights_hidden_to_output += learning_rate * delta_weights_h_o / \
+        self.weights_hidden_to_output += self.lr * delta_weights_h_o / \
             n_records  # update hidden-to-output weights with gradient descent step
-        self.weights_input_to_hidden += learning_rate * delta_weights_i_h / \
+        self.weights_input_to_hidden += self.lr * delta_weights_i_h / \
             n_records  # update input-to-hidden weights with gradient descent step
 
     def run(self, features):
@@ -140,6 +149,6 @@ class NeuralNetwork(object):
 # Set your hyperparameters here
 ##########################################################
 iterations = 200
-learning_rate = 0.1
+learning_rate = 0.6
 hidden_nodes = 2
 output_nodes = 1
