@@ -90,6 +90,8 @@ class NeuralNetwork(object):
 
         # hidden_error = np.dot(self.weights_hidden_to_output, output_error_term)
         # hidden_error = np.dot(self.weights_hidden_to_output, error)
+        # hidden_error = error * final_outputs * (1.0 - final_outputs)
+
         hidden_error = error * final_outputs * (1.0 - final_outputs)
 
         # hidden_error_term = hidden_error * \
