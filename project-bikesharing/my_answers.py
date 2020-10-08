@@ -56,7 +56,7 @@ class NeuralNetwork(object):
         '''
         # Check Validity !!
 
-        hidden_inputs = X.dot(self.weights_input_to_hidden)
+        hidden_inputs = np.dot(X, self.weights_input_to_hidden)
         hidden_outputs = self.activation_function(hidden_inputs)
 
         # final_inputs = hidden_outputs.dot(self.weights_hidden_to_output)
@@ -92,7 +92,7 @@ class NeuralNetwork(object):
         # hidden_error = np.dot(self.weights_hidden_to_output, error)
         # hidden_error = error * final_outputs * (1.0 - final_outputs)
 
-        hidden_error = error * final_outputs * (1.0 - final_outputs)
+        hidden_error = np.dot(self.weights_hidden_to_output, error)
 
         # hidden_error_term = hidden_error * \
         #     hidden_outputs * (1 - hidden_outputs)
